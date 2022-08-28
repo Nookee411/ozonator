@@ -18,7 +18,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->call(function(){
             ProductsController::planProductScan();
-        })->everyMinute();
+        })->daily()->evenInMaintenanceMode();
     }
 
     /**
