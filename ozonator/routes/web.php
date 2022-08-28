@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProductsController;
+use App\Models\Product;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
@@ -26,9 +27,20 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::group(['prefix'=>'lk', 'as'=>'lk.'], function(){
+    Route::get('/products', function(){
+        return Inertia::render('Products');
+    })->name('products');
+    Route::get('/products/{id}', function($id){
+        return Inertia::render('Details', [ 'product' => Product::with('statistics')->find($id) ]);
+    })->name('details');
+});
+
+// Route::get('/dashboard', function () {
+//     return Inertia::render('Dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Route::get('/products/{post}', [ProductsController::class, 'store'])->middleware(['auth', 'verified'])->name('details');
 
 Route::resource('/products', ProductsController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
 

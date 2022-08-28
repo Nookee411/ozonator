@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\ProcessTask;
 use App\Models\Product;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Inertia\Inertia;
 
 class ProductsController extends Controller
 {
@@ -30,25 +33,25 @@ class ProductsController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'link' => 'required|url|regex:/http(s)*:\/\/.*ozon.ru\/product\//',
+            'ozon_link' => 'required|url|regex:/http(s)*:\/\/.*ozon.ru\/product\//',
         ]);
         $matches = [];
-        preg_match('/\d{3,21}\//', $request->link, $matches);
+        preg_match('/\d{3,21}\//', $request->ozon_link, $matches);
         $ozonId = substr($matches[0], 0, -1);
 
         $userId = Auth::user()->id;
+
 
         // Check if user already have such resource
         $product = Product::query()->where([
             'ozon_id' => $ozonId,
             'user_id' => $userId,
         ])->first();
-
         if(isset($product)){
             return response()->json([
                 'status'=>'error',
                 'errors'=>[
-                    'link' => 'Такой товар уже отслеживается'
+                    'ozon_link' => ['Такой товар уже отслеживается']
                 ]
             ]);
         }
@@ -60,10 +63,15 @@ class ProductsController extends Controller
 
         //Query task for new product
 
-        Task::query()->create([
+        $task = Task::query()->create([
             'type' => Task::FIRST_PRODUCT_CHECK,
             'product_id' => $product->id,
         ]);
+
+        dispatch(new ProcessTask($task));
+        // shell_exec(`/Users/daniilvotintsev/.nvm/versions/node/v18.7.0/bin/node -r dotenv/config dotenv_config_path=/Users/daniilvotintsev/Practice/ozon/broemu/.env /Users/daniilvotintsev/Practice/ozon/broemu/task.js ` . $task->id);
+        // Log::debug($output);
+
 
         return response()->json(['status'=>'success', 'product'=> $product]);
     }
@@ -74,9 +82,9 @@ class ProductsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Product $product)
     {
-        //
+        return $product;
     }
 
     /**
@@ -110,6 +118,28 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $result = Product::find($id)->delete();
+        if($result)
+            return response()->json(['status'=>'success']);
+        else
+            return response()->json(['status'=>'error']);
+
     }
+
+
+    /**
+     * 
+     */
+    public static function planProductScan(){
+        $productToScan = Product::query()->get();
+        // Log::debug(var_export($productToScan, true));
+        foreach($productToScan as $product) {
+            $task = Task::query()->create([
+                'type' => Task::PRODUCT_RECHECK,
+                'product_id' => $product->id,
+            ]);
+    
+            dispatch(new ProcessTask($task));
+        }
+    } 
 }

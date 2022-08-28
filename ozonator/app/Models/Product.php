@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Console\View\Components\Task;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'ozon_id',
@@ -22,5 +23,9 @@ class Product extends Model
 
     public function tasks() {
         return $this->hasMany(Task::class);
+    }
+
+    public function statistics() {
+        return $this->hasMany(Statistics::class);
     }
 }

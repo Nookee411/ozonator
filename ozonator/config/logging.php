@@ -1,3 +1,4 @@
+
 <?php
 
 use Monolog\Handler\NullHandler;
@@ -51,6 +52,11 @@ return [
     */
 
     'channels' => [
+        'job' =>  [
+            'driver' => 'single',
+            'path' => storage_path('logs/job.log'),
+            'level' => 'debug',
+        ],
         'stack' => [
             'driver' => 'stack',
             'channels' => ['single'],

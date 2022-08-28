@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Task;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,12 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tasks', function (Blueprint $table) {
+        Schema::create('statistics', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->smallInteger('type');
             $table->unsignedBigInteger('product_id');
-            $table->smallInteger('status')->default(Task::STATUS_PENDING);
+            $table->unsignedInteger('price')->nullable();
+            $table->unsignedInteger('discount_price')->nullable();
+            $table->unsignedInteger('ozon_card_price')->nullable();
+            $table->float('rating')->nullable();
+            $table->mediumInteger('reviews')->nullable();
+            $table->mediumInteger('stock')->nullable();
+            $table->boolean('is_bestseller')->nullable();
 
             $table->foreign('product_id')->references('id')->on('products');
         });
@@ -32,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tasks');
+        Schema::dropIfExists('statistics');
     }
 };

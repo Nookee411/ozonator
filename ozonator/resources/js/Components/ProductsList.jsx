@@ -1,11 +1,22 @@
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { divide } from 'lodash';
 import React, { Suspense, useState } from 'react';
-import Pagination from 'react-js-pagination';
 import ProductService from '@/services/ProductService';
+import EditIcon from '@/Icons/EditIcon';
+import DeleteIcon from '@/Icons/DeleteIcon';
+import { Link } from '@inertiajs/inertia-react';
 
 export default function ProductsList() {
   const query = useQuery(['todos'], ProductService.getAll);
+  const queryClient = useQueryClient();
+  const mutation = useMutation(ProductService.deleteProduct, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['todos']);
+    },
+  });
+  const deleteProduct = (id) => (e) => {
+    mutation.mutate(id);
+  };
 
   return (
     <div className="overflow-x-auto relative">
@@ -30,13 +41,15 @@ export default function ProductsList() {
           </tr>
         </thead>
         <tbody>
-          {query.data.data.products.map((item, index) => (
-            <tr key={item.id} className={`bg-white border-b ${!(index % 2) ? 'bg-gray-200' : 'bg-gray-300'}`}>
+          {query.data.products.map((item, index) => (
+            <tr key={item.id} className={`bg-white border-b hover:bg-gray-100 hover:ease-in-out transition duration-200 ${!(index % 2) ? 'bg-gray-200' : 'bg-gray-300 '}`}>
               <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
                 {item.id}
               </th>
               <td className="py-4 px-6">
-                {item.title ?? <div>Loading...</div>}
+                <Link href={route('lk.details', { id: item.id })}>
+                  {item.title ?? <div>Загрузка...</div>}
+                </Link>
               </td>
               <td className="py-4 px-6">
                 <a
@@ -49,8 +62,9 @@ export default function ProductsList() {
 
                 </a>
               </td>
-              <td className="py-4 px-6 hover:text-indigo-700 hover:ease-in-out transition duration-200 cursor-pointer">
-                123
+              <td className="py-4 px-6 ">
+                {/* <EditIcon classes="w-6 h-6 hover:text-indigo-700 transition duration-200 cursor-pointer" /> */}
+                <DeleteIcon classes="w-6 h-6 hover:text-indigo-700 transition duration-200 cursor-pointer" onClick={deleteProduct(item.id)} />
               </td>
             </tr>
           ))}

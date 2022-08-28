@@ -1,6 +1,5 @@
 import React, { Suspense, useEffect, useState } from 'react';
 import { Head } from '@inertiajs/inertia-react';
-import axios from 'axios';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Authenticated from '@/Layouts/Authenticated';
 import Button from '@/Components/Button';
@@ -8,19 +7,30 @@ import Input from '@/Components/Input';
 import InputError from '@/Components/InputError';
 import ProductsList from '@/Components/ProductsList';
 import ProductService from '@/services/ProductService';
+import { STATUS } from '@/constants';
 
-export default function Dashboard({ auth, errors }) {
+export default function Products({ auth, errors }) {
   const [link, setLink] = useState('');
-  const [products, setProducts] = useState([]);
+  const [errorMessages, setErrorMessages] = useState([]);
 
   const handleInput = (e) => {
     setLink(e.target.value);
+    setErrorMessages([]);
   };
 
   const queryClient = useQueryClient();
   const mutation = useMutation(ProductService.postProduct, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['todos']);
+    onSuccess: (data) => {
+      if (data.status === STATUS.SUCCESS) {
+        setLink('');
+        queryClient.invalidateQueries(['todos']);
+      } else {
+        setErrorMessages(data.errors.ozon_link);
+      }
+    },
+    onError: (data) => {
+      const linkErrors = data.response.data.errors.ozon_link;
+      setErrorMessages(linkErrors);
     },
   });
 
@@ -36,23 +46,30 @@ export default function Dashboard({ auth, errors }) {
     >
       <Head title="Товары" />
       <div className="px-4 bg-white">
-        <div className="flex flex-col sm:flex-row items-stretch mb-4">
+        <div className="mb-4">
 
-          <Input
-            type="text"
-            value={link}
-            handleChange={handleInput}
-            placeholder="Ссылка на товар"
-            className="w-full mb-3 sm:mb-0 sm:mr-4"
-          />
-          <Button
-            type="button"
-            className="w-full sm:w-auto"
-            onClick={postProduct}
-          >
-            Add product
-          </Button>
+          <div className="flex flex-col sm:flex-row items-stretch">
+            <Input
+              type="text"
+              value={link}
+              handleChange={handleInput}
+              placeholder="Ссылка на товар"
+              className="w-full mb-3 sm:mb-0 sm:mr-4"
+
+            />
+            <Button
+              processing={mutation.isLoading}
+              type="button"
+              className="w-full sm:w-auto"
+              onClick={postProduct}
+              disabled={errorMessages.length}
+            >
+              Добавить товар
+            </Button>
+          </div>
+          <InputError messages={errorMessages} />
         </div>
+
         <div className="pb-12">
           <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg ">
             <Suspense fallback={<div>Загрузка...</div>}>
