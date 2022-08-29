@@ -149,5 +149,5 @@ const TYPES = {
 })()
 
 async function writeLogs(data) {
-  console.log(data);
+  console.log(`[${moment().toISOString()}]: ${data}`);
 }

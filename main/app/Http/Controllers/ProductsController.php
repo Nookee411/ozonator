@@ -20,7 +20,10 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = Auth::user()->products;
+        $products = Auth::user()->products()->orderByDesc('created_at')->get();
+        // Log::debug(var_export($products, true));
+        // Log::debug(var_export($userWithProducts, true));
+        
         return response()->json(['status'=>'success', 'products'=> $products]); 
     }
 
@@ -132,7 +135,6 @@ class ProductsController extends Controller
      */
     public static function planProductScan(){
         $productToScan = Product::query()->get();
-        // Log::debug(var_export($productToScan, true));
         foreach($productToScan as $product) {
             $task = Task::query()->create([
                 'type' => Task::PRODUCT_RECHECK,

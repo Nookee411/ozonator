@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Task;
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -24,7 +25,6 @@ class ProcessTask implements ShouldQueue
     public function __construct(Task $task)
     {
         $this->task = $task;
-        Log::debug(1234);
     }
 
     /**
@@ -34,7 +34,7 @@ class ProcessTask implements ShouldQueue
      */
     public function handle()
     {
-        Log::debug(12345);
-        shell_exec('cd /Users/daniilvotintsev/Practice/ozon/broemu/ && node task.js '. $this->task->id .' > output.log');
+        Log::channel('job')->debug('Starting node command to scan.');
+        shell_exec('cd '. env('BROEMU_PATH') . ' && '. env('NODE_PATH') . ' task.js '. $this->task->id .' >> output.log');
     }
 }
