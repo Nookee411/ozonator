@@ -26,9 +26,6 @@ export default function ProductsList() {
             <th scope="col" className="py-3 px-6">
               id
             </th>
-            {/* <th scope="col" className="py-3 px-6">
-              Color
-            </th> */}
             <th scope="col" className="py-3 px-6">
               Название
             </th>
@@ -46,7 +43,7 @@ export default function ProductsList() {
               <th scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
                 {item.id}
               </th>
-              <td className="py-4 px-6">
+              <td className="py-4 px-6 text-ellipsis max-w-md whitespace-nowrap overflow-hidden">
                 <Link href={route('lk.details', { id: item.id })}>
                   {item.title ?? <div>Загрузка...</div>}
                 </Link>

@@ -72,9 +72,6 @@ class ProductsController extends Controller
         ]);
 
         dispatch(new ProcessTask($task));
-        // shell_exec(`/Users/daniilvotintsev/.nvm/versions/node/v18.7.0/bin/node -r dotenv/config dotenv_config_path=/Users/daniilvotintsev/Practice/ozon/broemu/.env /Users/daniilvotintsev/Practice/ozon/broemu/task.js ` . $task->id);
-        // Log::debug($output);
-
 
         return response()->json(['status'=>'success', 'product'=> $product]);
     }

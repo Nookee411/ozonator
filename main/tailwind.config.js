@@ -17,6 +17,7 @@ module.exports = {
       colors: {
         'ozon-green': 'rgb(16, 196, 76)',
         'ozon-red': '#f91155',
+        'ozon-blue': '#0156F3',
       },
     },
   },

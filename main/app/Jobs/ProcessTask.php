@@ -35,6 +35,8 @@ class ProcessTask implements ShouldQueue
     public function handle()
     {
         Log::channel('job')->debug('Starting node command to scan.');
-        shell_exec('cd '. env('BROEMU_PATH') . ' && '. env('NODE_PATH') . ' task.js '. $this->task->id .' >> output.log');
+        $command = 'cd '. env('BROEMU_PATH') . ' && '. env('NODE_PATH') . ' task.js '. $this->task->id .' >> output.log';
+        Log::debug($command);
+        shell_exec($command);
     }
 }

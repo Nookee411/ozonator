@@ -11,7 +11,7 @@ export default function Button({
                 ${processing && 'opacity-25'}
                 ${
                     !disabled && {
-                      primary: 'bg-indigo-600 hover:bg-indigo-700',
+                    primary: 'bg-indigo-600 hover:bg-indigo-700',
                       outline: 'bg-transparent text-black border-1 border-gray-400',
                     }[variant]
                 } 
