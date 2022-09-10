@@ -3,7 +3,7 @@ const TASK_TYPE = require('../constants');
 const { writeLogs } = require('../utils');
 
 const launch_opt = {
-  // headless: false,
+  headless: false,
   args: [
     '--no-sandbox',
     '--disable-setuid-sandbox',

@@ -10,7 +10,6 @@ const ProductService = require('./services/ProductService');
   const product = await knex('products').where({id: task.product_id}).first()
 
   const service = await ProductService()
-  console.log(product);
   const data = await service.scanProduct(task.type, product.ozon_id)
 
   if(task.type === TASK_TYPE.FIRST_SCAN) {
@@ -30,7 +29,7 @@ const ProductService = require('./services/ProductService');
     'is_bestseller': data.isBestseller,
     'stock': data.stock,
   })
-  
+  service.destroy()
   knex.destroy()
 })()
 
