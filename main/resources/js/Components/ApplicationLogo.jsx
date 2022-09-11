@@ -4,7 +4,7 @@ export default function ApplicationLogo({ className, size }) {
   return (
     <svg width={size} height={size} viewBox="0 0 2000 2000" fill="none" xmlns="http://www.w3.org/2000/svg">
       <circle cx="1000" cy="1000" r="1000" fill="#0156F3" />
-      <mask id="mask0_101_27" style={{ 'mask-type': 'alpha' }} maskUnits="userSpaceOnUse" x="0" y="0" width="2000" height="2000">
+      <mask id="mask0_101_27" style={{ maskType: 'alpha' }} maskUnits="userSpaceOnUse" x="0" y="0" width="2000" height="2000">
         <circle cx="1000" cy="1000" r="1000" fill="#0156F3" />
       </mask>
       <g mask="url(#mask0_101_27)">

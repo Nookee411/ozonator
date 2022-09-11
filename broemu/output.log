@@ -1,0 +1,53 @@
+[2022-09-10T05:12:13.234Z]: Starting browser
+[2022-09-10T05:12:14.522Z]: success
+[2022-09-10T05:12:14.522Z]: Loading page [https://www.ozon.ru/product/235153468]
+[2022-09-10T05:12:15.777Z]: Success. Page loaded
+[2022-09-10T05:12:15.874Z]: Prices parsed
+[2022-09-10T05:12:15.874Z]: Scaninig bestseller
+[2022-09-10T05:12:15.877Z]: Success
+[2022-09-10T05:12:15.877Z]: Scanning rating
+  232 отзыва
+[2022-09-10T05:12:16.443Z]: Success
+[2022-09-10T05:12:16.454Z]: Add to cart
+[2022-09-10T05:12:17.076Z]: Loading page [https://www.ozon.ru/cart]
+[2022-09-10T05:12:17.454Z]: Success. Page loaded
+[2022-09-10T05:12:18.456Z]: Close popup if needed
+[2022-09-10T05:12:18.524Z]: Success
+10+
+[2022-09-10T05:12:19.238Z]: Success
+[2022-09-10T05:12:19.238Z]: Delete from cart
+[2022-09-10T08:39:42.394Z]: Starting browser
+[2022-09-10T08:39:44.554Z]: success
+[2022-09-10T08:39:44.555Z]: Loading page [https://www.ozon.ru/product/551741708]
+[2022-09-10T08:39:45.366Z]: Success. Page loaded
+[2022-09-10T08:39:45.769Z]: Prices parsed
+[2022-09-10T08:39:45.769Z]: Scaninig bestseller
+[2022-09-10T08:39:45.837Z]: Success
+[2022-09-10T08:39:45.837Z]: Scanning rating
+  123 отзыва
+[2022-09-10T08:39:45.876Z]: Success
+[2022-09-10T08:39:45.876Z]: Add to cart
+[2022-09-10T08:39:46.695Z]: Loading page [https://www.ozon.ru/cart]
+[2022-09-10T08:39:47.669Z]: Success. Page loaded
+[2022-09-10T08:39:48.670Z]: Close popup if needed
+[2022-09-10T08:39:48.738Z]: Success
+8
+[2022-09-10T08:39:48.801Z]: Success
+[2022-09-10T08:39:48.801Z]: Delete from cart
+[2022-09-10T08:40:29.499Z]: Starting browser
+[2022-09-10T08:40:31.204Z]: success
+[2022-09-10T08:40:31.205Z]: Loading page [https://www.ozon.ru/product/256030962]
+[2022-09-10T08:40:32.047Z]: Success. Page loaded
+[2022-09-10T08:40:32.495Z]: Prices parsed
+[2022-09-10T08:40:32.495Z]: Scaninig bestseller
+[2022-09-10T08:40:32.510Z]: Success
+[2022-09-10T08:40:32.510Z]: Scanning rating
+[2022-09-10T08:40:43.934Z]: Rating error
+[2022-09-10T08:40:43.934Z]: Error: page.waitForSelector: Target closed
+=========================== logs ===========================
+waiting for selector "[data-widget="webReviewProductScore"]" to be visible
+  selector resolved to hidden <div data-widget="webReviewProductScore">…</div>
+============================================================
+[2022-09-10T08:40:43.935Z]: Add to cart
+[2022-09-10T08:40:43.936Z]: Stock parsing error
+[2022-09-10T08:40:43.936Z]: Error: page.click: Target page, context or browser has been closed

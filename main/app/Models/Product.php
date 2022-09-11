@@ -14,10 +14,9 @@ class Product extends Model
     protected $fillable = [
         'ozon_id',
         'title',
-        'user_id'
     ];
 
-    public function user() {
+    public function users() {
         return $this->belongsTo(User::class);
     }
 

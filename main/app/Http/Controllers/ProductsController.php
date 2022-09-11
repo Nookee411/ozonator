@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\ProcessTask;
 use App\Models\Product;
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +22,6 @@ class ProductsController extends Controller
     public function index()
     {
         $products = Auth::user()->products()->orderByDesc('created_at')->get();
-        // Log::debug(var_export($products, true));
         // Log::debug(var_export($userWithProducts, true));
         
         return response()->json(['status'=>'success', 'products'=> $products]); 
@@ -46,10 +46,11 @@ class ProductsController extends Controller
 
 
         // Check if user already have such resource
-        $product = Product::query()->where([
-            'ozon_id' => $ozonId,
-            'user_id' => $userId,
-        ])->first();
+        $product = Auth::user()->products()->where(['ozon_id' => $ozonId])->first();
+        
+        // Log::debug(isset($product));
+        // Log::debug(count($product)));
+        
         if(isset($product)){
             return response()->json([
                 'status'=>'error',
@@ -61,8 +62,9 @@ class ProductsController extends Controller
         
         $product = Product::query()->create([
             'ozon_id' => $ozonId,
-            'user_id' => $userId,
         ]);
+
+        Auth::user()->products()->attach($product);
 
         //Query task for new product
 
@@ -118,7 +120,7 @@ class ProductsController extends Controller
      */
     public function destroy($id)
     {
-        $result = Product::find($id)->delete();
+        $result = Auth::user()->products()->detach($id);
         if($result)
             return response()->json(['status'=>'success']);
         else
@@ -131,7 +133,7 @@ class ProductsController extends Controller
      * 
      */
     public static function planProductScan(){
-        $productToScan = Product::query()->get();
+        $productToScan = Product::get();
         foreach($productToScan as $product) {
             $task = Task::query()->create([
                 'type' => Task::PRODUCT_RECHECK,

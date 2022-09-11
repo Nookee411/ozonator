@@ -35,7 +35,8 @@ class ProcessTask implements ShouldQueue
     public function handle()
     {
         Log::channel('job')->debug('Starting node command to scan.');
-        $command = 'cd '. env('BROEMU_PATH') . ' && '. env('NODE_PATH') . ' task.js '. $this->task->id;
+        // "/root/.nvm/versions/node/v18.9.0/bin/node -r /var/www/ozonator/broemu/node_modules/dotenv/config /var/www/ozonator/broemu/task.js ". $this->task->id . ' dotenv_config_path=/var/www/ozonator/broemu/.env';
+        $command = env('NODE_PATH') . ' -r ' . env('BROEMU_PATH') . 'node_modules/dotenv/config ' . env('BROEMU_PATH') . 'task.js ' . $this->task->id . ' dotenv_config_path=' . env('BROEMU_PATH') . '.env';
         Log::channel('job')->debug($command);
         $output = shell_exec($command);
         Log::channel('job')->debug($output);

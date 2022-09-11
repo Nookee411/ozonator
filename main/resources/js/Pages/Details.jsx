@@ -56,7 +56,7 @@ export default function Details({ auth, errors }) {
         ranges={state}
         direction="vertical"
       /> */}
-      <ProductPriceChart statistics={product.statistics}/>
+      <ProductPriceChart statistics={product.statistics} />
       <div className="overflow-x-auto relative">
         <table className="w-full text-sm text-left text-gray-500">
           <thead className="text-xs text-gray-700 uppercase bg-gray-300">
@@ -88,16 +88,13 @@ export default function Details({ auth, errors }) {
                   {moment(item.created_at).format('DD.MM.YYYY')}
                 </th>
                 <td className="py-4 px-6 font-bold text-black">
-                  {item.price}
-                  &nbsp;₽
+                  {item.price === null ? 'N/D' : `${item.price}₽`}
                 </td>
                 <td className="py-4 px-6 text-ozon-red font-bold">
-                  {item.discount_price}
-                  &nbsp;₽
+                  {item.discount_price === null ? 'N/D' : `${item.discount_price}₽`}
                 </td>
                 <td className="py-4 px-6 text-ozon-green font-bold">
-                  {item.ozon_card_price}
-                  &nbsp;₽
+                  {item.ozon_card_price === null ? 'N/D' : `${item.ozon_card_price}₽`}
                 </td>
                 <td className="py-4 px-6 ">
                   {item.stock}
