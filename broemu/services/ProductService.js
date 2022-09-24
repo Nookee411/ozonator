@@ -17,7 +17,7 @@ const launch_opt = {
   ],
 };
 const opt = {
-  defaultTimeout: 5000,
+  defaultTimeout: 30000,
   viewport: {
     width: 1920,
     height: 1080,
@@ -54,10 +54,11 @@ async function ProductService() {
 
     const pricesText = await pricesBlock.innerText();
     const pricesRaw = pricesText.split('₽');
-    const ozonMatch = pricesText.match(/\d* ₽ при оплате Ozon Картой/gi)
+    const ozonMatch = pricesText.match(/[\d ]* ₽ при оплате Ozon Картой/gi)
     let ozonPrice
     if(ozonMatch) {
-      const ozonRaw = ozonMatch[0].replace(/ ₽ при оплате Ozon Картой/, '')
+      const ozonRaw = ozonMatch[0].match(/[\d ]*/)[0].replaceAll(/ /gi, '')
+      console.log(ozonRaw);
       ozonPrice = Number(ozonRaw);
 
     }
@@ -90,7 +91,7 @@ async function ProductService() {
     try {
       const outofstock = await page.waitForSelector(
         '[data-widget="webGallery"]',
-        { timeout: 3000 },
+        { timeout: 10000 },
     );
       return true
     } catch (ex) {
@@ -129,7 +130,7 @@ async function ProductService() {
 
     writeLogs('Close popup if needed');
     const popupButton = await page.$('[data-widget="alertPopup"] button svg', {
-      timeout: 2000,
+      timeout: 6000,
     });
     if (popupButton) await popupButton.click();
     writeLogs('Success');
