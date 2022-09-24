@@ -13,13 +13,16 @@ const ProductService = require('./services/ProductService');
   const data = await service.scanProduct(task.type, product.ozon_id)
 
   if(task.type === TASK_TYPE.FIRST_SCAN) {
-    let seller = await knex('sellers').where({ id: data.seller.id}).first()
-    if(!seller) {
-      seller = await knex('sellers').insert({
-        id: data.seller.id,
-        name: data.seller.name,
-      })
+    if(data.seller.id) {
+      let seller = await knex('sellers').where({ id: data.seller.id}).first()
+      if(!seller) {
+        seller = await knex('sellers').insert({
+          id: data.seller.id,
+          name: data.seller.name,
+        })
+      }
     }
+    
     await knex('products')
     .where({id: product.id})
       .update({ 
