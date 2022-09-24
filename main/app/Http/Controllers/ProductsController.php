@@ -21,7 +21,7 @@ class ProductsController extends Controller
      */
     public function index()
     {
-        $products = Auth::user()->products()->orderByDesc('created_at')->get();
+        $products = Auth::user()->products()->with(['seller'])->orderByDesc('created_at')->get();
         // Log::debug(var_export($userWithProducts, true));
         
         return response()->json(['status'=>'success', 'products'=> $products]); 
@@ -85,8 +85,11 @@ class ProductsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Product $product)
-    {
-        return $product;
+    {   
+        Log::debug($product);
+        return Inertia::render('Details', [ 'product' => $product->load(['statistics' => function($query) {
+            $query->orderBy('created_at', 'asc');
+        }])]);
     }
 
     /**

@@ -23,6 +23,7 @@ export const options = {
 
 export default function ProductPriceChart({ statistics }) {
   const chartData = useMemo(() => {
+    // console.log(statistics.length);
     const labels = statistics.map((ele) => moment(ele.created_at).format('DD.MM.YYYY'));
     return ({
       labels,
@@ -50,7 +51,9 @@ export default function ProductPriceChart({ statistics }) {
   }, [statistics]);
 
   return (
-    <Line options={options} data={chartData} />
+    <section className="max-w-full overflow-x-auto">
+      <Line options={options} data={chartData} className="max-w-6xl min-w-[700px] max-h-[400px] mx-auto" />
+    </section>
 
   );
 }

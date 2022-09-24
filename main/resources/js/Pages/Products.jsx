@@ -12,6 +12,7 @@ import { STATUS } from '@/constants';
 export default function Products({ auth, errors }) {
   const [link, setLink] = useState('');
   const [errorMessages, setErrorMessages] = useState([]);
+  const [refetchInterval, setRefetchInterval] = useState(4000);
 
   const handleInput = (e) => {
     setLink(e.target.value);
@@ -24,6 +25,7 @@ export default function Products({ auth, errors }) {
       if (data.status === STATUS.SUCCESS) {
         setLink('');
         queryClient.invalidateQueries(['todos']);
+        setRefetchInterval(4000);
       } else {
         setErrorMessages(data.errors.ozon_link);
       }
@@ -45,10 +47,10 @@ export default function Products({ auth, errors }) {
       header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Товары</h2>}
     >
       <Head title="Товары" />
-      <div className="px-4 bg-white">
+      <div className="bg-white">
         <div className="mb-4">
 
-          <div className="flex flex-col sm:flex-row items-stretch">
+          <div className="px-4 flex flex-col sm:flex-row items-stretch">
             <Input
               type="text"
               value={link}
@@ -70,13 +72,12 @@ export default function Products({ auth, errors }) {
           <InputError messages={errorMessages} />
         </div>
 
-        <div className="pb-12">
-          <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg ">
-            <Suspense fallback={<div>Загрузка...</div>}>
-              <ProductsList />
-            </Suspense>
-          </div>
-        </div>
+        <Suspense fallback={<div>Загрузка...</div>}>
+          <ProductsList
+            refetchInterval={refetchInterval}
+            setRefetchInterval={setRefetchInterval}
+          />
+        </Suspense>
       </div>
 
     </Authenticated>

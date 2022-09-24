@@ -14,6 +14,7 @@ class Product extends Model
     protected $fillable = [
         'ozon_id',
         'title',
+        'seller_id',
     ];
 
     public function users() {
@@ -26,5 +27,9 @@ class Product extends Model
 
     public function statistics() {
         return $this->hasMany(Statistics::class);
+    }
+
+    public function seller() {
+        return $this->belongsTo(Seller::class);
     }
 }

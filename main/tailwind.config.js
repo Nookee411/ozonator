@@ -13,11 +13,13 @@ module.exports = {
     extend: {
       fontFamily: {
         sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+        monsterrat: ['Monsterrat', ...defaultTheme.fontFamily.sans],
       },
       colors: {
         'ozon-green': 'rgb(16, 196, 76)',
         'ozon-red': '#f91155',
         'ozon-blue': '#0156F3',
+        'ozon-black': '#111',
       },
     },
   },

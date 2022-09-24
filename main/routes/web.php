@@ -31,9 +31,7 @@ Route::group(['prefix'=>'lk', 'as'=>'lk.'], function(){
     Route::get('/products', function(){
         return Inertia::render('Products');
     })->name('products');
-    Route::get('/products/{id}', function($id){
-        return Inertia::render('Details', [ 'product' => Product::with('statistics')->find($id) ]);
-    })->name('details');
+    Route::get('/products/{product}', [ProductsController::class, 'show'])->name('details');
 });
 
 // Route::get('/dashboard', function () {
